@@ -3,7 +3,7 @@ import java.lang.String;
 
 public class Program {
 
-	public static int GetMinOfSequence(Scanner input) {
+	public static int getMinOfSequence(Scanner input) {
 		int min = 9;
 		int tmp;
 
@@ -16,12 +16,12 @@ public class Program {
 		return min;
 	}
 
-	public static void PrintResult(long result, int weekCount) {
+	public static void printResult(long result, int weekCount) {
 		if (result == 0) {
 			return ;
 		} else {
 			int tmp;
-			PrintResult(result / 10, weekCount - 1);
+			printResult(result / 10, weekCount - 1);
 			tmp = (int)result % 10;
 			System.out.printf("Week %d ", weekCount - 1);
 			for (int i = 0; i < tmp; i++) {
@@ -45,7 +45,7 @@ public class Program {
 			} else {
 				tmpInt = input.nextInt();
 				if (tmpInt == weekCount) {
-					result = result * 10 + GetMinOfSequence(input);
+					result = result * 10 + getMinOfSequence(input);
 				} else {
 					System.err.println("IllegalArgument");
 					System.exit(-1);
@@ -53,7 +53,7 @@ public class Program {
 				weekCount++;
 			}
 		}
-		PrintResult(result, weekCount);
+		printResult(result, weekCount);
 		input.close();
 	}
 }

@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Program {
 
-	public static int CountSum(int value) {
+	public static int countSum(int value) {
 		int result = 0;
 
         while (value > 0) {
@@ -12,7 +12,7 @@ public class Program {
 		return result;
 	}
 
-	public static boolean IsPrime(int value) {
+	public static boolean isPrime(int value) {
         int sqrt = 1;
         int i = 2;
 
@@ -36,7 +36,7 @@ public class Program {
 			if (tmp == 42) {
 				break;
 			}
-			if (IsPrime(CountSum(tmp))) {
+			if (isPrime(countSum(tmp))) {
 				count++;
 			}
 		}
