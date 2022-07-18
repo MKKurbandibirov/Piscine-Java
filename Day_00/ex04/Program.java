@@ -7,7 +7,7 @@ public class Program {
 	public static final int UNICODE_LEN = 65536;
 	public static final int RES_LEN = 10;
 
-	public static int[][] generateArrayOfMax(String line) {
+	public static void generateArrayOfMax(String line) {
 		int[] map = new int[UNICODE_LEN];
 		char[] tmp = line.toCharArray();
 		
@@ -42,26 +42,27 @@ public class Program {
 			uniq[tmpInd][1] = -1;
 			maxs[i][0] = uniq[tmpInd][0];
 			maxs[i][1] = max;
-			// System.out.printf("%c - %d\n", maxs[i][0], maxs[i][1]);
 		}
-		return maxs;
+		if (uniqLen < 10) {
+			printResult(maxs, uniqLen);
+		} else {
+			printResult(maxs, RES_LEN);
+		}
 	}
 
-	public static void printResult(int[][] maxs) {
-		char[][] result = new char[RES_LEN + 1][RES_LEN];
-		double norm = 1.0 * maxs[0][1] / RES_LEN;
+	public static void printResult(int[][] maxs, int len) {
+		char[][] result = new char[RES_LEN + 1][len];
 
-		for (int j = 0; j < RES_LEN; j++) {
-			double tmp = 1.0 * maxs[j][1];
+		for (int j = 0; j < len; j++) {
+			double tmp = 1.0 * maxs[j][1] / maxs[0][1] * 10;
 			int i;
-			for (i = RES_LEN; i > 0 && (tmp - norm) >= 0; i--) {
+			for (i = RES_LEN; i > 0 && tmp >= RES_LEN - i + 1; i--) {
 				result[i][j] = '#';
-				tmp -= norm;
 			}
 			result[i][j] = 'M';
 		}
 		for (int i = 0; i < RES_LEN + 1; i++) {
-			for (int j = 0; j < RES_LEN; j++) {
+			for (int j = 0; j < len; j++) {
 				if (result[i][j] == 'M') {
 					System.out.printf(" %2d ", maxs[j][1]);
 				} else {
@@ -70,7 +71,7 @@ public class Program {
 			}
 			System.out.println();
 		}
-		for (int i = 0; i < RES_LEN; i++) {
+		for (int i = 0; i < len; i++) {
 			System.out.printf(" %2c ", maxs[i][0]);
 		}
 
@@ -78,9 +79,14 @@ public class Program {
 
 	public static void main(String[] args) {
 		Scanner input = new Scanner(System.in);
-		String line = input.nextLine();
-		int[][] maxs = generateArrayOfMax(line);
-		printResult(maxs);
+		String line;
+
+		if (input.hasNextLine()) {
+			line = input.nextLine();
+			if (line != null && line.length() > 0) {
+				generateArrayOfMax(line);
+			}
+		}
 		input.close();
 	}
 }
