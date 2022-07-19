@@ -32,6 +32,9 @@ public class Program {
 		int tmp;
 
 		while (true) {
+			if (!input.hasNextInt()) {
+				System.exit(1);
+			}
 			tmp = input.nextInt();
 			if (tmp == 42) {
 				break;
@@ -41,5 +44,6 @@ public class Program {
 			}
 		}
 		System.out.printf("Count of coffee-request - %d\n", count);
+		input.close();
 	}
 }

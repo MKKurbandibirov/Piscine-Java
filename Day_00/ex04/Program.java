@@ -81,7 +81,7 @@ public class Program {
 		Scanner input = new Scanner(System.in);
 		String line;
 
-		if (input.hasNextLine()) {
+		if (!input.hasNextLine()) {
 			line = input.nextLine();
 			if (line != null && line.length() > 0) {
 				generateArrayOfMax(line);

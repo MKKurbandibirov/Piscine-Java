@@ -8,6 +8,9 @@ public class Program {
 		int tmp;
 
 		for (int i = 0; i < 5; i++) {
+			if (!input.hasNextInt()) {
+				System.exit(1);
+			}
 			tmp = input.nextInt();
 			if (min > tmp) {
 				min = tmp;
@@ -39,10 +42,16 @@ public class Program {
 		long result = 0;
 
 		while (true) {
+			if (!input.hasNext()) {
+				System.exit(1);
+			}
 			tmpStr = input.next();
 			if (tmpStr.equals("42") == true || weekCount > 18) {
 				break;
 			} else {
+				if (!input.hasNextInt()) {
+					System.exit(1);
+				}
 				tmpInt = input.nextInt();
 				if (tmpInt == weekCount) {
 					result = result * 10 + getMinOfSequence(input);
