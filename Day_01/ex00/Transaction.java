@@ -17,7 +17,7 @@ public class Transaction {
 		this.setRecipient(recipient);
 		this.setSender(sender);
 		this.setCategory(category);
-		this.amount = amount;
+		this.setAmount(amount);
 	}
 
 	public User getRecipient() {
@@ -60,7 +60,12 @@ public class Transaction {
 
 	@Override
 	public String toString() {
-		String category = this.getCategory().toString() == CREDIT.toString() ? "Credit" : "Debit";
+		String category;
+		if (this.getCategory() == Transaction.CREDIT) {
+			category = "Credit";
+		} else {
+			category = "Debit";
+		}
 		String str = "Sender - " + this.getSender().getName() + "; Recipient - " + this.getRecipient().getName() + "; Category - " + category + "; Amount - " + this.getAmount() + ";";
 		return str;
 	}

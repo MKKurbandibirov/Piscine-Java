@@ -14,7 +14,7 @@ public class UsersArrayList implements UserList {
 			this.users[length] = newUser;
 			this.length++;
 		} else {
-			this.capacity *= 2;
+			this.capacity += this.capacity / 2;
 			User[] tmp = new User[this.capacity];
 			for (int i = 0; i < this.length; i++) {
 				tmp[i] = this.users[i];

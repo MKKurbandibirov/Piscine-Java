@@ -11,10 +11,30 @@ public class Program {
 		TransactionsLinkedList actions = new TransactionsLinkedList(action1);
 		TransactionsLinkedList tmp;
 
+		tmp = actions;
+		while (tmp != null) {
+			System.out.println(tmp.value);
+			tmp = tmp.next;
+		}
+
+		try {
+			actions.removeById(action1.getId().toString());
+		} catch (TransactionNotFoundException e) {
+			System.out.println(e.getMessage());
+		}
+
+		tmp = actions;
+		while (tmp != null) {
+			System.out.println(tmp.value);
+			tmp = tmp.next;
+		}
+
+		System.out.println(actions.getLength());
+
 		actions.addTransaction(action2);
 
 		try {
-			actions.removeById(action2.getId());
+			actions.removeById(action2.getId().toString());
 		} catch (TransactionNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
@@ -22,6 +42,8 @@ public class Program {
 		actions.addTransaction(action3);
 		actions.addTransaction(action2);
 		actions.addTransaction(action3);
+
+		user1.setList(actions);
 		
 		tmp = actions;
 		while (tmp != null) {
@@ -32,8 +54,8 @@ public class Program {
 		System.out.println("------------------------------------------");
 
 		try {
-			actions.removeById(action2.getId());
-			actions.removeById(action3.getId());
+			actions.removeById(action2.getId().toString());
+			actions.removeById(action3.getId().toString());
 			actions.removeById("666");
 		} catch (TransactionNotFoundException e) {
 			System.out.println(e.getMessage());

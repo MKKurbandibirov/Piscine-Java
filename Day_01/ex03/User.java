@@ -4,11 +4,27 @@ public class User {
 	private int id;
 	private String 	name;
 	private Integer	balance;
+	private TransactionsLinkedList list;
 
 	public User(String name) {
 		this.setName(name);
 		this.setId();
 		this.setBalance(0);
+		this.setList(null);
+	}
+
+	public User(String name, TransactionsLinkedList list) {
+		this.setName(name);
+		this.setId();
+		this.setBalance(0);
+		this.setList(list);
+	}
+
+	public TransactionsLinkedList getList() {
+		return this.list;
+	}
+	public void setList(TransactionsLinkedList list) {
+		this.list = list;
 	}
 
 	public Integer getId() {
