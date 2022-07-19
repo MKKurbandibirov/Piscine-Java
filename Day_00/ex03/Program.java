@@ -1,5 +1,4 @@
 import java.util.Scanner;
-import java.lang.String;
 
 public class Program {
 
@@ -23,9 +22,9 @@ public class Program {
 		if (result == 0) {
 			return ;
 		} else {
-			int tmp;
+			long tmp;
 			printResult(result / 10, weekCount - 1);
-			tmp = (int)result % 10;
+			tmp = result % 10;
 			System.out.printf("Week %d ", weekCount - 1);
 			for (int i = 0; i < tmp; i++) {
 				System.out.print("=");
