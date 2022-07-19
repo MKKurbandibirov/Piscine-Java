@@ -29,6 +29,9 @@ public class User {
 		return this.balance;
 	}
 	public void setBalance(Integer balance) {
+		if (balance < 0) {
+			this.balance = 0;
+		}
 		this.balance = balance;
 	}
 

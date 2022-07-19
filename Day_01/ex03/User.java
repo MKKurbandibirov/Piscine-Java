@@ -1,21 +1,21 @@
-package ex00;
+package ex03;
 
 public class User {
-	private Integer id;
+	private int id;
 	private String 	name;
 	private Integer	balance;
 
-	public User(String name, Integer id) {
+	public User(String name) {
 		this.setName(name);
-		this.setId(id);
+		this.setId();
 		this.setBalance(0);
 	}
 
 	public Integer getId() {
 		return this.id;
 	}
-	public void setId(Integer id) {
-		this.id = id;
+	public void setId() {
+		this.id = UserIdsGenerator.getInstance().generateId();
 	}
 
 	public String getName() {
@@ -29,9 +29,6 @@ public class User {
 		return this.balance;
 	}
 	public void setBalance(Integer balance) {
-		if (balance < 0) {
-			this.balance = 0;
-		}
 		this.balance = balance;
 	}
 
@@ -41,3 +38,4 @@ public class User {
 		return str;
 	}
 }
+

@@ -35,7 +35,7 @@ public class UsersArrayList implements UserList {
 	}
 
 	public User getByIndex(int ind) {
-		if (ind < this.length) {
+		if (ind < this.length && ind > 0) {
 			return this.users[ind];
 		}
 		return null;
