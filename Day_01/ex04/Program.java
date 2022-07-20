@@ -20,7 +20,7 @@ public class Program {
 			System.out.println(service.getUserBalance(1));
 			System.out.println(service.getUserBalance(5));
 		} catch (UserNotFoundException e) {
-			System.out.println(e.getMessage());
+			System.err.println(e.getMessage());
 		}
 		System.out.println();
 
@@ -52,7 +52,7 @@ public class Program {
 		}
 		System.out.println();
 
-		Transaction notValid = new Transaction(user3, user2, Transaction.DEBIT, 245);
+		Transaction notValid = new Transaction(user3, user2, Transaction.DEBIT, 5464);
 
 		user3.getList().addTransaction(notValid);
 
@@ -60,7 +60,6 @@ public class Program {
 		for (int i = 0; i < notPaired.length; i++) {
 			System.out.println(notPaired[i]);
 		}
-
 	}
 }
 

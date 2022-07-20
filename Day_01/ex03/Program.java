@@ -20,7 +20,7 @@ public class Program {
 		try {
 			actions.removeById(action1.getId().toString());
 		} catch (TransactionNotFoundException e) {
-			System.out.println(e.getMessage());
+			System.err.println(e.getMessage());
 		}
 
 		tmp = actions.start;
@@ -36,7 +36,7 @@ public class Program {
 		try {
 			actions.removeById(action2.getId().toString());
 		} catch (TransactionNotFoundException e) {
-			System.out.println(e.getMessage());
+			System.err.println(e.getMessage());
 		}
 
 		actions.addTransaction(action3);
@@ -58,7 +58,7 @@ public class Program {
 			actions.removeById(action3.getId().toString());
 			actions.removeById("666");
 		} catch (TransactionNotFoundException e) {
-			System.out.println(e.getMessage());
+			System.err.println(e.getMessage());
 		}
 
 		tmp = actions.start;

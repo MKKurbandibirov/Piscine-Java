@@ -113,139 +113,114 @@ public class Menu {
 	}
 
 	public void addUser(Scanner input) {
-		while (true) {
-			String name;
-			Integer balance;
-			System.out.println("Enter a user name and a balance");
-			if (!input.hasNext()) {
-				System.err.println("Invalid command!");
-				continue;
-			}
-			name = input.next();
-			if (!input.hasNextInt()) {
-				System.err.println("Invalid command!");
-				continue;
-			}
-			balance = input.nextInt();
-			User user = new User(name);
-			user.setBalance(balance);
-			service.addUser(user);
-			String response = "User with id = " + user.getId() + " is added";
-			System.out.println(response);
-			System.out.println("---------------------------------------------------------");
-			break;
+		String name;
+		Integer balance;
+		System.out.println("Enter a user name and a balance");
+		if (!input.hasNext()) {
+			System.err.println("Invalid command!");;
 		}
+		name = input.next();
+		if (!input.hasNextInt()) {
+			System.err.println("Invalid command!");
+		}
+		balance = input.nextInt();
+		User user = new User(name);
+		user.setBalance(balance);
+		service.addUser(user);
+		String response = "User with id = " + user.getId() + " is added";
+		System.out.println(response);
+		System.out.println("---------------------------------------------------------");
 	}
 
 	public void getUserBalance(Scanner input) {
-		while (true) {
-			System.out.println("Enter a user ID");
-			Integer id;
-			if (!input.hasNextInt()) {
-				System.err.println("Invalid command!");
-				continue;
-			}
-			id = input.nextInt();
-			try {
-				String name = service.getListOfUsers().getById(id).getName();
-				Integer balance = service.getUserBalance(id);
-				String response = name + " - " + balance;
-				System.out.println(response);
-			} catch (UserNotFoundException e) {
-				System.err.println(e.getMessage());
-			}
-			System.out.println("---------------------------------------------------------");
-			break;
+		System.out.println("Enter a user ID");
+		Integer id;
+		if (!input.hasNextInt()) {
+			System.err.println("Invalid command!");
 		}
+		id = input.nextInt();
+		try {
+			String name = service.getListOfUsers().getById(id).getName();
+			Integer balance = service.getUserBalance(id);
+			String response = name + " - " + balance;
+			System.out.println(response);
+		} catch (UserNotFoundException e) {
+			System.err.println(e.getMessage());
+		}
+		System.out.println("---------------------------------------------------------");
 	}
 
 	public void performTransfer(Scanner input){
-		while (true) {
-			System.out.println("Enter a sender ID, a recipient ID, and a transfer amount");
-			int senderId;
-			int recipientId;
-			int amount;
-			if (!input.hasNextInt()) {
-				System.err.println("Invalid command!");
-				continue;
-			}
-			senderId = input.nextInt();
-			if (!input.hasNextInt()) {
-				System.err.println("Invalid command!");
-				continue;
-			}
-			recipientId = input.nextInt();
-			if (!input.hasNextInt()) {
-				System.err.println("Invalid command!");
-				continue;
-			}
-			amount = input.nextInt();
-			service.performTransaction(senderId, recipientId, amount);
-			System.out.println("The transfer is completed");
-			System.out.println("---------------------------------------------------------");
-			break;
+		System.out.println("Enter a sender ID, a recipient ID, and a transfer amount");
+		int senderId;
+		int recipientId;
+		int amount;
+		if (!input.hasNextInt()) {
+			System.err.println("Invalid command!");
 		}
+		senderId = input.nextInt();
+		if (!input.hasNextInt()) {
+			System.err.println("Invalid command!");
+		}
+		recipientId = input.nextInt();
+		if (!input.hasNextInt()) {
+			System.err.println("Invalid command!");
+		}
+		amount = input.nextInt();
+		service.performTransaction(senderId, recipientId, amount);
+		System.out.println("The transfer is completed");
+		System.out.println("---------------------------------------------------------");
 	}
 
 	public void getUserTransaction(Scanner input) {
-		while (true) {
-			System.out.println("Enter a user ID");
-			int id;
-			if (!input.hasNextInt()) {
-				System.err.println("Invalid command!");
-				continue;
+		System.out.println("Enter a user ID");
+		int id;
+		if (!input.hasNextInt()) {
+			System.err.println("Invalid command!");
+		}
+		id = input.nextInt();
+		try {
+			Transaction[] arr = service.getListOfUsers().getById(id).getList().toArray();
+			for (int i = 0; i < arr.length; i++) {
+				System.out.printf("To %s(id = %d) %d with id = %s\n", arr[i].getRecipient().getName(), arr[i].getRecipient().getId(), arr[i].getAmount(), arr[i].getId());
 			}
-			id = input.nextInt();
-			try {
-				Transaction[] arr = service.getListOfUsers().getById(id).getList().toArray();
-				for (int i = 0; i < arr.length; i++) {
-					System.out.printf("To %s(id = %d) %d with id = %s\n", arr[i].getRecipient().getName(), arr[i].getRecipient().getId(), arr[i].getAmount(), arr[i].getId());
-				}
-				System.out.println("---------------------------------------------------------");
-				break;
-			} catch (UserNotFoundException e) {
-				System.out.println(e.getMessage());
-			}
+			System.out.println("---------------------------------------------------------");
+		} catch (UserNotFoundException e) {
+			System.err.println(e.getMessage());
 		}
 	}
 
 	public void removeTransferById(Scanner input) {
-		while (true) {
-			System.out.println("Enter a user ID and a transfer ID");
-			int userId;
-			String transferId;
-			if (!input.hasNextInt()) {
-				System.err.println("Invalid command!");
-				continue;
-			}
-			userId = input.nextInt();
-			if (!input.hasNext()) {
-				System.err.println("Invalid command!");
-				continue;
-			}
-			transferId = input.next();
-			try {
-				Transaction[] arr = service.getListOfUsers().getById(userId).getList().toArray();
-				int i;
-				for (i = 0; i < arr.length; i++) {
-					if (arr[i].getId().toString().equals(transferId)) {
-						break;
-					}
+		System.out.println("Enter a user ID and a transfer ID");
+		int userId;
+		String transferId;
+		if (!input.hasNextInt()) {
+			System.err.println("Invalid command!");
+		}
+		userId = input.nextInt();
+		if (!input.hasNext()) {
+			System.err.println("Invalid command!");
+		}
+		transferId = input.next();
+		try {
+			Transaction[] arr = service.getListOfUsers().getById(userId).getList().toArray();
+			int i;
+			for (i = 0; i < arr.length; i++) {
+				if (arr[i].getId().toString().equals(transferId)) {
+					break;
 				}
-				if (i == arr.length) {
-					System.err.println("Invalid transfer id!");
-					continue;
-				}
-				int amount = arr[i].getAmount();
-				User recipient = arr[i].getRecipient(); 
-				service.deleteTransactionForUser(userId, UUID.fromString(transferId));
-				System.out.printf("Transfer To %s(id = %d) %d removed\n", recipient.getName(), recipient.getId(), abs(amount));
-				System.out.println("---------------------------------------------------------");
-				break;
-			} catch (UserNotFoundException e) {
-				System.out.println(e.getMessage());
 			}
- 		}
+			if (i == arr.length) {
+				System.err.println("Invalid transfer id!");
+			}
+			int amount = arr[i].getAmount();
+			User recipient = arr[i].getRecipient(); 
+			service.deleteTransactionForUser(userId, UUID.fromString(transferId));
+			System.out.printf("Transfer To %s(id = %d) %d removed\n", recipient.getName(), recipient.getId(), abs(amount));
+			System.out.println("---------------------------------------------------------");
+		} catch (UserNotFoundException e) {
+			System.err.println(e.getMessage());
+		}
 	}
 
 	public void checkTransferValidity(Scanner input) {

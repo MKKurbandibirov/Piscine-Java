@@ -36,7 +36,7 @@ public class TransactionsService {
 			sender.getList().addTransaction(action2);
 
 		} catch (UserNotFoundException | IllegalTransactionException e) {
-			System.out.println(e.getMessage());
+			System.err.println(e.getMessage());
 		}
 	}
 
@@ -46,7 +46,7 @@ public class TransactionsService {
 			Transaction[] actions = user.getList().toArray();
 			return actions;
 		} catch (UserNotFoundException e) {
-			System.out.println(e.getMessage());
+			System.err.println(e.getMessage());
 			return null;
 		}
 	}
@@ -56,7 +56,7 @@ public class TransactionsService {
 			User user = this.listOfUsers.getById(userId);
 			user.getList().removeById(actionId.toString());
 		} catch (UserNotFoundException | TransactionNotFoundException e) {
-			System.out.println(e.getMessage());
+			System.err.println(e.getMessage());
 		}
 	}
 

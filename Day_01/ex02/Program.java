@@ -34,7 +34,7 @@ public class Program {
 		try {
 			System.out.println(users.getById(5));
 		} catch (UserNotFoundException e) {
-			System.out.println(e.getMessage());
+			System.err.println(e.getMessage());
 		}
 
 		System.out.println(users.getByIndex(8));
