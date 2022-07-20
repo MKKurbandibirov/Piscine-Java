@@ -9,12 +9,12 @@ public class Program {
 		Transaction action2 = new Transaction(user2, user3, Transaction.DEBIT, 1050);
 		Transaction action3 = new Transaction(user3, user1, Transaction.CREDIT, -4340);
 		TransactionsLinkedList actions = new TransactionsLinkedList(action1);
-		TransactionsLinkedList tmp;
+		TransactionsLinkedListNode tmp;
 
-		tmp = actions;
+		tmp = actions.start;
 		while (tmp != null) {
-			System.out.println(tmp.value);
-			tmp = tmp.next;
+			System.out.println(tmp.getValue());
+			tmp = tmp.getNextNode();
 		}
 
 		try {
@@ -23,10 +23,10 @@ public class Program {
 			System.out.println(e.getMessage());
 		}
 
-		tmp = actions;
+		tmp = actions.start;
 		while (tmp != null) {
-			System.out.println(tmp.value);
-			tmp = tmp.next;
+			System.out.println(tmp.getValue());
+			tmp = tmp.getNextNode();
 		}
 
 		System.out.println(actions.getLength());
@@ -45,10 +45,10 @@ public class Program {
 
 		user1.setList(actions);
 		
-		tmp = actions;
+		tmp = actions.start;
 		while (tmp != null) {
-			System.out.println(tmp.value);
-			tmp = tmp.next;
+			System.out.println(tmp.getValue());
+			tmp = tmp.getNextNode();
 		}
 
 		System.out.println("------------------------------------------");
@@ -61,10 +61,10 @@ public class Program {
 			System.out.println(e.getMessage());
 		}
 
-		tmp = actions;
+		tmp = actions.start;
 		while (tmp != null) {
-			System.out.println(tmp.value);
-			tmp = tmp.next;
+			System.out.println(tmp.getValue());
+			tmp = tmp.getNextNode();
 		}
 
 		System.out.println("------------------------------------------");

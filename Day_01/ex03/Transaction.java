@@ -47,9 +47,9 @@ public class Transaction {
 		return this.amount;
 	}
 	public void setAmount(Integer amount) {
-		if (getCategory() == CREDIT && getAmount() > 0) {
+		if (this.getCategory() == Transaction.CREDIT && amount > 0) {
 			this.amount = 0;
-		} else if (getCategory() == DEBIT && getAmount() < 0) {
+		} else if (this.getCategory() == Transaction.DEBIT && amount < 0) {
 			this.amount = 0;
 		} else {
 			this.amount = amount;

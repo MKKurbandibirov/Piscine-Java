@@ -24,7 +24,11 @@ public class User {
 		return this.list;
 	}
 	public void setList(TransactionsLinkedList list) {
-		this.list = list;
+		if (list == null) {
+			this.list = new TransactionsLinkedList();
+		} else {
+			this.list = list;
+		}
 	}
 
 	public Integer getId() {

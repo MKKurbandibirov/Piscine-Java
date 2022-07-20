@@ -1,13 +1,18 @@
 package ex03;
 
 public class TransactionsLinkedList implements TransactionsList{
-	public	Transaction value;
-	public	TransactionsLinkedList next;
+	public TransactionsLinkedListNode start;
+	public TransactionsLinkedListNode end;
 	private int length = 0;
 
+	public TransactionsLinkedList() {
+		this.start = new TransactionsLinkedListNode();
+		this.end = new TransactionsLinkedListNode();
+		this.length = 0;
+	}
 	public TransactionsLinkedList(Transaction action) {
-		this.value = action;
-		this.next = null;
+		this.start = new TransactionsLinkedListNode(action);
+		this.end = this.start;
 		this.length = 1;
 	}
 
@@ -16,32 +21,30 @@ public class TransactionsLinkedList implements TransactionsList{
 	}
 	
 	public void addTransaction(Transaction action) {
-		TransactionsLinkedList node = new TransactionsLinkedList(action);
-		TransactionsLinkedList tmp = this;
+		TransactionsLinkedListNode node = new TransactionsLinkedListNode(action);
 
-		if (this.value == null) {
-			this.value = action;
-			this.length++;
-			return;
-		}
-		while (tmp.next != null) {
-			tmp = tmp.next;
-		}
-		tmp.next = node;
+		node.setNextNode(this.start);
+		this.start = node;
 		this.length++;
 	}
 
 	public void removeById(String id) throws TransactionNotFoundException {
-		TransactionsLinkedList curr;
-		curr = this;
-		while (curr.next != null && !id.equals(curr.next.value.getId().toString())) {
-			curr = curr.next;
-		}
-		if (curr.next != null && id.equals(curr.next.value.getId().toString())) {
-			curr.next = curr.next.next;
+		TransactionsLinkedListNode curr;
+		curr = this.start;
+
+		if (id.equals(curr.getValue().getId().toString())) {
+			this.start = this.start.getNextNode();
 			this.length--;
-		} else if (curr.next == null && id.equals(curr.value.getId().toString())) {
-			curr.value = null;
+			return;
+		}
+		while (curr.getNextNode() != null && !id.equals(curr.getNextNode().getValue().getId().toString())) {
+			curr = curr.getNextNode();
+		}
+		if (curr.getNextNode() != null && id.equals(curr.getNextNode().getValue().getId().toString())) {
+			curr.setNextNode(curr.getNextNode().getNextNode());
+			this.length--;
+		} else if (curr.getNextNode() == null && id.equals(curr.getValue().getId().toString())) {
+			curr = null;
 			this.length--;
 		} else {
 			throw new TransactionNotFoundException("Transaction " + id + " not found!");
@@ -50,11 +53,11 @@ public class TransactionsLinkedList implements TransactionsList{
 
 	public Transaction[] toArray() {
 		Transaction[] array = new Transaction[this.length];
-		TransactionsLinkedList curr = this;
+		TransactionsLinkedListNode curr = this.start;
 
 		for (int i = 0; curr != null && i < this.length; i++) {
-			array[i] = curr.value;
-			curr = curr.next;
+			array[i] = curr.getValue();
+			curr = curr.getNextNode();
 		}
 		return array;
 	}
