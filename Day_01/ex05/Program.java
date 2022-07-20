@@ -1,5 +1,7 @@
 package ex05;
 
+import java.util.InputMismatchException;
+
 public class Program {
 	public static void main(String[] args) {
 		Menu.Mode mode = null;
@@ -13,7 +15,9 @@ public class Program {
 			System.exit(-1);
 		}
 		Menu menu = new Menu(mode);
-		menu.mainLoop();
+		try {
+			menu.mainLoop();
+		} catch (InputMismatchException e) {}
 	}
 }
 
