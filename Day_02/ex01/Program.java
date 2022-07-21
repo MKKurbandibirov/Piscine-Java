@@ -61,6 +61,9 @@ public class Program {
 		for (int i = 0; i < vectorA.size(); i++) {
 			multiSum += vectorA.get(i) * vectorB.get(i);
 		}
+		if (squareSumA == 0.0 || squareSumB == 0.0) {
+			return 0.0;
+		}
 		return multiSum / (squareSumA * squareSumB);
 	}
 
