@@ -88,7 +88,12 @@ public class Program {
 			
 			readFilesToDict(args[0], fileAEntrance);
 			readFilesToDict(args[1], fileBEntrance);
-			dictArray = dictionary.toString().replaceAll("^\\[|\\]$", "").split(", ");
+			dictArray = new String[dictionary.size()];
+			int i = 0;
+			for (String string : dictionary) {
+				dictArray[i] = string;
+				i++;
+			}
 			Arrays.sort(dictArray, Comparator.naturalOrder());
 			fillVector(vectorA, fileAEntrance);
 			fillVector(vectorB, fileBEntrance);
