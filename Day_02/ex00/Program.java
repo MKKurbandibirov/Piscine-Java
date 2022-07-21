@@ -19,21 +19,10 @@ public class Program {
 			byte[] bytes = new byte[length];
 			fileInput.read(bytes);
 			String signatureLines = new String(bytes);
-			// System.out.println(signatureLines);
 			String[] splitedLines = signatureLines.split("\n");
-			// for (String string : splitedLines) {
-			// 	System.out.println(string);
-			// }
 			for (String line : splitedLines) {
 				String[] keyVal = line.split(",");
-				// System.out.printf("%s\t%s", keyVal[0], keyVal[1]);
-				// System.out.println();
 				String[] values = keyVal[1].trim().split(" ");
-				// System.out.printf("%s\t", keyVal[0]);
-				// for (String string : values) {
-				// 	System.out.printf(" %s |", string);
-				// }
-				// System.out.println();
 				signatureMap.put(keyVal[0], values); 
 			}
 		} catch (IOException e) {
