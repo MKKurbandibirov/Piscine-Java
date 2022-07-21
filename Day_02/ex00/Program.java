@@ -19,10 +19,21 @@ public class Program {
 			byte[] bytes = new byte[length];
 			fileInput.read(bytes);
 			String signatureLines = new String(bytes);
+			// System.out.println(signatureLines);
 			String[] splitedLines = signatureLines.split("\n");
+			// for (String string : splitedLines) {
+			// 	System.out.println(string);
+			// }
 			for (String line : splitedLines) {
 				String[] keyVal = line.split(",");
+				// System.out.printf("%s\t%s", keyVal[0], keyVal[1]);
+				// System.out.println();
 				String[] values = keyVal[1].trim().split(" ");
+				// System.out.printf("%s\t", keyVal[0]);
+				// for (String string : values) {
+				// 	System.out.printf(" %s |", string);
+				// }
+				// System.out.println();
 				signatureMap.put(keyVal[0], values); 
 			}
 		} catch (IOException e) {
@@ -59,7 +70,7 @@ public class Program {
 				boolean check = false;
 				for (Map.Entry<String, String[]> entry : signatureMap.entrySet()) {
 					check = true;
-					for (int i = 0; i < maxLength; i++) {
+					for (int i = 0; i < entry.getValue().length; i++) {
 						if (!entry.getValue()[i].equals(strBytes[i])) {
 							check = false;
 							break;
@@ -83,15 +94,6 @@ public class Program {
 
 	public static void main(String[] args) {
 		setSignatureMap();
-		for (Map.Entry<String, String[]> entry : signatureMap.entrySet()) {
-			System.out.printf("%s\t", entry.getKey());
-			for (String string : entry.getValue()) {
-				System.out.printf("%s ", string);
-			}
-			System.out.println();
-		}
-
-
 		for (String[] values : signatureMap.values()) {
 			if (values.length > maxLength) {
 				maxLength = values.length;
