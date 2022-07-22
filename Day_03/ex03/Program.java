@@ -1,14 +1,15 @@
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.IOError;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-
-import javafx.scene.transform.Scale;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 public class Program {
 	private static String URLS_FILE = "files_urls.txt";
@@ -59,9 +60,14 @@ public class Program {
 				System.exit(-1);
 			}
 			readURLFile();
-			// for (Map.Entry<Integer, String> entry : filesURL.entrySet()) {
-			// 	readFileFromURL(entry.getKey(), entry.getValue());
-			// }
+			ExecutorService service = Executors.newFixedThreadPool(threadsCount);
+			for (Map.Entry<Integer, String> entry : filesURL.entrySet()) {
+				service.submit(() -> {
+					readFileFromURL(entry.getKey(), entry.getValue());
+				});
+			}
+			service.shutdown();
+			
 
 			
 		} else {
