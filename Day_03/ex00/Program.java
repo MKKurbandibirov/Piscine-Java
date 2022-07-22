@@ -49,9 +49,11 @@ public class Program {
 				}
 			} else {
 				System.err.println("Invalid argument");
+				System.exit(-1);
 			}
 		} else {
 			System.err.println("Invalid argument");
+			System.exit(-1);
 		}
 	}
 }

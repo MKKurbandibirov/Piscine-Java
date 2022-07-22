@@ -66,12 +66,14 @@ public class Program {
 				arraySize = Integer.parseInt(tmp[1]);
 			} else {
 				System.err.println("Invalid argument");
+				System.exit(-1);
 			}
 			tmp = args[1].split("=");
 			if (tmp[0].equals("--threadsCount")) {
 				threadsCount = Integer.parseInt(tmp[1]);
 			} else {
 				System.err.println("Invalid argument");
+				System.exit(-1);
 			}
 			generateRandomArray();
 			System.out.printf("Sum: %d\n", countSumStandard());
@@ -89,6 +91,7 @@ public class Program {
 			System.out.printf("Sum by threads %d\n", result);
 		} else {
 			System.err.println("Invalid argument");
+			System.exit(-1);
 		}
 	}
 }
