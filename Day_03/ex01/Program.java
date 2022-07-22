@@ -1,64 +1,16 @@
 public class Program {
 	private static int count;
-	public static class Printer {
-		public static boolean isPrinted = true;
-		public synchronized void print(String message) {
-			if (!isPrinted) {
-				try {
-					isPrinted = true;
-					wait();
-				} catch (InterruptedException e) {
-					e.getStackTrace();
-				}
-			}
-			notify();
-			isPrinted = false;
-		}
-	}
-
-	public static class Egg extends Thread {
-		private String message;
-		private Printer printer;
-
-		public Egg(String message, Printer printer) {
-			this.message = message;
-			this.printer = printer;
-		}
-
-		@Override
-		public void run() {
-			for (int i = 0; i < count; i++) {
-				printer.print(message);
-			}
-		}
-	}
-
-	public static class Hen extends Thread {
-		private String message;
-		private Printer printer;
-
-		public Hen(String message, Printer printer) {
-			this.message = message;
-			this.printer = printer;
-		}
-
-		@Override
-		public void run() {
-			for (int i = 0; i < count; i++) {
-				printer.print(message);
-			}
-
-		}
-	}
-
 	public static void main(String[] args) {
+
 		if(args.length == 1){
 			String[] tmp = args[0].split("=");
 			if (tmp[0].equals("--count")) {
 				count = Integer.parseInt(tmp[1]);
-				Printer printer1 = new Printer();
-				Thread hen = new Hen("Hen", printer1);
-				Thread egg = new Egg("Egg", printer1);
+				Store store = new Store();
+				Producer producer = new Producer(store);
+				Consumer consumer = new Consumer(store);
+				Thread egg = new Thread(producer);
+				Thread hen = new Thread(consumer);
 				egg.start();
 				hen.start();
 				try {
@@ -74,6 +26,56 @@ public class Program {
 		} else {
 			System.err.println("Invalid argument");
 			System.exit(-1);
+		}
+	}
+	public static class Store {
+		private int product=0;
+		public synchronized void get() {
+			while (product<1) {
+				try {
+					wait();
+				}
+				catch (InterruptedException e) {}
+			}
+			product--;
+			System.out.println("Hen");
+			notify();
+		}
+		public synchronized void put() {
+			while (product>0) {
+			try {
+				wait();
+			}
+			catch (InterruptedException e) {} 
+			}
+			product++;
+			System.out.println("Egg");
+			notify();
+		}
+	}
+	
+	public static class Producer implements Runnable{
+	  
+		Store store;
+		Producer(Store store){
+			this.store=store; 
+		}
+		public void run(){
+			for (int i = 1; i < count; i++) {
+				store.put();
+			}
+		}
+	}
+	public static class Consumer implements Runnable{
+		  
+		 Store store;
+		Consumer(Store store){
+		   this.store=store; 
+		}
+		public void run(){
+			for (int i = 1; i < count; i++) {
+				store.get();
+			}
 		}
 	}
 }
