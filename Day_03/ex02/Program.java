@@ -49,7 +49,11 @@ public class Program {
 
 	public static void subThreadsCreate() {
 		threads = new SubThread[threadsCount];
-		int range = arraySize / (threadsCount - 1);
+		int tmp = arraySize;
+		while (tmp % threadsCount != 0) {
+			tmp++;
+		}
+		int range = tmp / threadsCount;
 		for (int i = 0, j = 0; i < arraySize; j++) {
 			if (i + range > arraySize) {
 				range = arraySize - i;

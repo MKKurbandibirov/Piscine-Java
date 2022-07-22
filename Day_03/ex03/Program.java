@@ -6,10 +6,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 
 public class Program {
 	private static String URLS_FILE = "files_urls.txt";
@@ -21,9 +19,12 @@ public class Program {
 		FileOutputStream fileOS = new FileOutputStream(number.toString())) {
 			byte data[] = new byte[1024];
 			int byteContent;
+			String threadName = "Thread-" + Thread.currentThread().getName().split("-")[3];
+			System.out.printf("%s start download file number %d\n", threadName, number);
 			while ((byteContent = inputStream.read(data, 0, 1024)) != -1) {
 				fileOS.write(data, 0, byteContent);
 			}
+			System.out.printf("%s finish download file number %d\n", threadName, number);
 		} catch (IOException e) {
 			e.getStackTrace();
 		}
@@ -67,9 +68,6 @@ public class Program {
 				});
 			}
 			service.shutdown();
-			
-
-			
 		} else {
 			System.err.println("Invalid argument");
 			System.exit(-1);

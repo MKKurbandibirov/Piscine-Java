@@ -1,6 +1,5 @@
 public class Program {
 	private static int count;
-
 	public static class Printer {
 		public static boolean isPrinted = true;
 		public synchronized void print(String message) {
@@ -14,7 +13,6 @@ public class Program {
 			}
 			notify();
 			isPrinted = false;
-			System.out.println(message);
 		}
 	}
 
@@ -49,6 +47,7 @@ public class Program {
 			for (int i = 0; i < count; i++) {
 				printer.print(message);
 			}
+
 		}
 	}
 
