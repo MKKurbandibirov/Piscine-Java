@@ -2,7 +2,7 @@ public class Program {
 	private static int count;
 
 	public static class Printer {
-		public static boolean isPrinted = false;
+		public static boolean isPrinted = true;
 		public synchronized void print(String message) {
 			if (!isPrinted) {
 				try {
@@ -60,8 +60,8 @@ public class Program {
 				Printer printer1 = new Printer();
 				Thread hen = new Hen("Hen", printer1);
 				Thread egg = new Egg("Egg", printer1);
-				hen.start();
 				egg.start();
+				hen.start();
 				try {
 					egg.join();
 					hen.join();
