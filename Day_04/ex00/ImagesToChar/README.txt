@@ -1,2 +1,2 @@
-javac -sourcepath src/java `find . -name "*.java"` -d target
-java -classpath ./target edu.school21.printer.app.Program /Users/nfarfetc/IdeaProjects/Piscine-Java/Day_04/it.bmp
+rm -rf target && mkdir target && javac -sourcepath src/java `find . -name "*.java"` -d target
+java -classpath ./target edu.school21.printer.app.Program /Users/nfarfetc/IdeaProjects/Piscine-Java/Day_04/it.bmp . 0
