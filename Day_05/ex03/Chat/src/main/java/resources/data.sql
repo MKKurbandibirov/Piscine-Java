@@ -1,32 +1,32 @@
 INSERT INTO users (login, password)
-VALUES ('Bob', '1111');
+VALUES ('Bob', '123456');
 INSERT INTO users (login, password)
-VALUES ('Andrew', '1112');
+VALUES ('Andrew', '123456');
 INSERT INTO users (login, password)
-VALUES ('Mike', '1113');
+VALUES ('Mike', '123456');
 INSERT INTO users (login, password)
-VALUES ('John', '1114');
+VALUES ('John', '123456');
 INSERT INTO users (login, password)
-VALUES ('Steve', '1115');
+VALUES ('Steve', '123456');
 
 INSERT INTO chatroom (name, owner)
-VALUES ('room1', 1);
+VALUES ('Work', 4);
 INSERT INTO chatroom (name, owner)
-VALUES ('room2', 2);
+VALUES ('Shop', 3);
 INSERT INTO chatroom (name, owner)
-VALUES ('room3', 3);
+VALUES ('Neighbourhood', 1);
 INSERT INTO chatroom (name, owner)
-VALUES ('room4', 4);
+VALUES ('Sport', 1);
 INSERT INTO chatroom (name, owner)
-VALUES ('room5', 5);
+VALUES ('Family', 5);
 
 INSERT INTO message (author, room, text, date)
-VALUES (1, 2, 'Hello1!', TO_TIMESTAMP('2017-03-31 9:30:20', 'YYYY-MM-DD HH:MI:SS'));
+VALUES (1, 1, 'Today is my first working day', TO_TIMESTAMP('2021-05-22 11:30:20', 'YYYY-MM-DD HH:MI:SS'));
 INSERT INTO message (author, room, text, date)
-VALUES (1, 2, 'Hello2!', TO_TIMESTAMP('2018-03-31 9:30:20', 'YYYY-MM-DD HH:MI:SS'));
+VALUES (2, 4, 'Hi! Lets go jogging!', TO_TIMESTAMP('2020-06-12 5:30:20', 'YYYY-MM-DD HH:MI:SS'));
 INSERT INTO message (author, room, text, date)
-VALUES (1, 2, 'Hello3!', TO_TIMESTAMP('2019-03-31 9:30:20', 'YYYY-MM-DD HH:MI:SS'));
+VALUES (4, 3, 'Whats up everybody! How are you doing?', TO_TIMESTAMP('2022-06-30 9:12:20', 'YYYY-MM-DD HH:MI:SS'));
 INSERT INTO message (author, room, text, date)
-VALUES (1, 2, 'Hello4!', TO_TIMESTAMP('2020-03-31 9:30:20', 'YYYY-MM-DD HH:MI:SS'));
+VALUES (5, 3, 'We are fine! And you?', TO_TIMESTAMP('2022-07-1 12:30:20', 'YYYY-MM-DD HH:MI:SS'));
 INSERT INTO message (author, room, text, date)
-VALUES (1, 2, 'Hello5!', TO_TIMESTAMP('2021-03-31 9:30:20', 'YYYY-MM-DD HH:MI:SS'));
+VALUES (3, 2, 'Is someone here?', TO_TIMESTAMP('2021-12-30 11:30:20', 'YYYY-MM-DD HH:MI:SS'));
