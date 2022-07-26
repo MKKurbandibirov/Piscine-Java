@@ -11,7 +11,7 @@ public class Program {
     private static String DB_URL = "jdbc:postgresql://localhost:5432/postgres";
     private static String USER = "postgres";
     private static String PASS = "";
-    public static void main(String[] args) throws SQLException{
+    public static void main(String[] args) {
         HikariDataSource ds = new HikariDataSource();
         ds.setJdbcUrl(DB_URL);
         ds.setUsername(USER);

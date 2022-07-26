@@ -24,29 +24,23 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
         Connection connection = ds.getConnection();
 
         Statement statement1 = connection.createStatement();
-        String query = "SELECT * FROM message WHERE id = " + id;;
+        String query = "SELECT message.id, text, date, c.id, name, u.id, login, password FROM message " +
+                "JOIN chatroom c ON c.id = message.room " +
+                "JOIN users u ON u.id = message.author " +
+                "WHERE message.id = " + id;
         ResultSet resultSet = statement1.executeQuery(query);
         resultSet.next();
 
-        Statement statement2 = connection.createStatement();
-        String userQuery = "SELECT * FROM users WHERE id = " + resultSet.getInt("author");;
-        ResultSet userResultSet = statement2.executeQuery(userQuery);
-        userResultSet.next();
-        User user = new User(userResultSet.getInt("id"), userResultSet.getString("login"),
-                userResultSet.getString("password"), null, null);
+        User user = new User(resultSet.getInt(6), resultSet.getString(7),
+                resultSet.getString(8), null, null);
 
-
-        Statement statement3 = connection.createStatement();
-        String roomQuery = "SELECT * FROM chatroom WHERE id = " + resultSet.getInt("room");
-        ResultSet roomResultSet = statement3.executeQuery(roomQuery);
-        roomResultSet.next();
-        Chatroom chatroom = new Chatroom(roomResultSet.getInt("id"),
-                roomResultSet.getString("name"), null, null);
+        Chatroom chatroom = new Chatroom(resultSet.getInt(4),
+                resultSet.getString(5), null, null);
 
         optionalMessage = Optional.of(new Message(
-                resultSet.getInt("id"), user, chatroom,
-                resultSet.getString("text"),
-                LocalDateTime.parse(resultSet.getString("date"), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
+                resultSet.getInt(1), user, chatroom,
+                resultSet.getString(2),
+                LocalDateTime.parse(resultSet.getString(3), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
         return optionalMessage;
     }
 

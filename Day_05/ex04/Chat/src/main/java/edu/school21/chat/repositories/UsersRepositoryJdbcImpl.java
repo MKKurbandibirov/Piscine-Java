@@ -22,24 +22,24 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
         if (user.getUserRooms() == null) {
             user.setUserRooms(new ArrayList<>());
             Chatroom room = new Chatroom(resultSet.getInt(4), "-", null, null);
-            if (!user.getUserRooms().contains(room)) {
+            if (!user.getUserRooms().contains(room) && room.getName() != null) {
                 user.getUserRooms().add(room);
             }
         } else {
             Chatroom room = new Chatroom(resultSet.getInt(4), "-", null, null);
-            if (!user.getUserRooms().contains(room)) {
+            if (!user.getUserRooms().contains(room) && room.getName() != null) {
                 user.getUserRooms().add(room);
             }
         }
         if (user.getCreatedRooms() == null) {
             user.setCreatedRooms(new ArrayList<>());
             Chatroom room = new Chatroom(resultSet.getInt(6), resultSet.getString(7), null, null);
-            if (!user.getCreatedRooms().contains(room)) {
+            if (!user.getCreatedRooms().contains(room) && room.getName() != null) {
                 user.getCreatedRooms().add(room);
             }
         } else {
             Chatroom room = new Chatroom(resultSet.getInt(6), resultSet.getString(7), null, null);
-            if (!user.getCreatedRooms().contains(room)) {
+            if (!user.getCreatedRooms().contains(room) && room.getName() != null) {
                 user.getCreatedRooms().add(room);
             }
         }
@@ -51,8 +51,8 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
 
         Statement statement = connection.createStatement();
         String query = "SELECT users.id, users.login, users.password, m.room, m.text, c.id, c.name FROM users " +
-                "JOIN chatroom c on users.id = c.owner " +
-                "JOIN message m on users.id = m.author";
+                "FULL JOIN chatroom c on users.id = c.owner " +
+                "FULL JOIN message m on users.id = m.author";
         ResultSet resultSet = statement.executeQuery(query);
         List<User> users = new ArrayList<>();
         while (resultSet.next()) {
@@ -69,6 +69,13 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
             } else {
                 readUserInfo(newUser, resultSet);
                 users.add(newUser);
+            }
+        }
+        for (User user : users) {
+            for (Chatroom room : user.getCreatedRooms()) {
+                if (!user.getUserRooms().contains(room)) {
+                    user.getUserRooms().add(room);
+                }
             }
         }
         int i = 0;
