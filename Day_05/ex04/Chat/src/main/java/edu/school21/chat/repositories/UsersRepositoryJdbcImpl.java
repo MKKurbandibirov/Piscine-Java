@@ -71,6 +71,16 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
                 users.add(newUser);
             }
         }
-        return users;
+        int i = 0;
+        for (int p = 0; p < page; p++, i += size) {}
+        if (i >= users.size()) {
+            System.err.println("Doesn't have page number - " + page);
+        }
+        List<User> result = new ArrayList<>(size);
+        for (int j =0; j < size && i < users.size(); j++) {
+            result.add(users.get(i));
+            i++;
+        }
+        return result;
     }
 }
