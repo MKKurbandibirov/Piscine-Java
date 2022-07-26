@@ -22,10 +22,10 @@ public class Program {
         ds.setPassword(PASS);
 
         MessagesRepository messagesRepository = new MessagesRepositoryJdbcImpl(ds);
-        Optional<Message> messageOptional = messagesRepository.findById(9L);
+        Optional<Message> messageOptional = messagesRepository.findById(12L);
         if (messageOptional.isPresent()) {
             Message message = messageOptional.get();
-            message.setText("How are you!");
+            message.setText("Salam Aleikum");
             message.setDate(LocalDateTime.now());
             messagesRepository.update(message);
         }

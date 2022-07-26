@@ -13,13 +13,9 @@ public class Program {
 	}
 
 	public static boolean isPrime(int value) {
-        int sqrt = 1;
         int i = 2;
 
-        while (sqrt * sqrt < value) {
-            sqrt++;
-        }
-        for (; i < sqrt; i++) {
+        for (; i * i < value; i++) {
             if (value % i == 0) {
                 return false;
             }

@@ -20,7 +20,7 @@ public class Program {
 
         UsersRepository usersRepository = new UsersRepositoryJdbcImpl(ds);
 
-        List<User> users = usersRepository.findAll(1, 3);
+        List<User> users = usersRepository.findAll(0, 5);
         for (User user : users) {
             System.out.printf("User{id = %d, login = %s, password = %s, \n", user.getId(), user.getLogin(), user.getPassword());
             System.out.printf("\tcreatedRooms[");

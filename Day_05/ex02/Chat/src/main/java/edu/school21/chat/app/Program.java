@@ -21,9 +21,9 @@ public class Program {
         ds.setUsername(USER);
         ds.setPassword(PASS);
 
-        User creator = new User(1, "user", "user", new ArrayList(), new ArrayList());
+        User creator = new User(5, "user", "user", new ArrayList(), new ArrayList());
         User author = creator;
-        Chatroom room = new Chatroom(3, "room", creator, new ArrayList());
+        Chatroom room = new Chatroom(4, "room", creator, new ArrayList());
         Message message = new Message(null, author, room, "Welcome to the club buddy!", LocalDateTime.now());
         MessagesRepository messagesRepository = new MessagesRepositoryJdbcImpl(ds);
 

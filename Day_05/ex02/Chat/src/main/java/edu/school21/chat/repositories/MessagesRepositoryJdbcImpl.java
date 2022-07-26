@@ -83,7 +83,7 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
         String query = "INSERT INTO message (author, room, text, date) VALUES ("
                 + message.getAuthor().getId() + ", " + message.getRoom().getId() + ", '" + message.getText() + "', "
                 + "TO_TIMESTAMP('"
-                + message.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                + message.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"))
                 + "', 'YYYY-MM-DD HH:MI:SS'))";
 
         PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -92,5 +92,10 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
         if (generatedKeys.next()) {
             message.setId(generatedKeys.getInt("id"));
         }
+        try {
+            connection.close();
+            statement.close();
+            generatedKeys.close();
+        } catch (SQLException e) {}
     }
 }

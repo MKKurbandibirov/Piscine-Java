@@ -44,6 +44,11 @@ public class MessageRepositoryJdbcImpl implements MessageRepository{
                 resultSet.getInt(1), user, chatroom,
                 resultSet.getString(2),
                 LocalDateTime.parse(resultSet.getString(3), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))));
+        try {
+            connection.close();
+            statement1.close();
+            resultSet.close();
+        } catch (SQLException e) {}
         return optionalMessage;
     }
 }
