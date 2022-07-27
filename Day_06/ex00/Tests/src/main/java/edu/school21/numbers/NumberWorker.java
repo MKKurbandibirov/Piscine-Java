@@ -1,7 +1,14 @@
 package edu.school21.numbers;
 
 public class NumberWorker {
-	public static boolean isPrime(int number) throws IllegalNumberException {
+
+    class IllegalNumberException extends Exception {
+        public IllegalNumberException(String message) {
+            super(message);
+        }
+    }
+
+	public boolean isPrime(int number) throws IllegalNumberException {
 		long i = 2;
 
 		if (number < 0 || number == 0 || number == 1) {

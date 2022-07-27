@@ -8,23 +8,25 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class NumberWorkerTest {
 
+	NumberWorker worker = new NumberWorker();
+
 	@ParameterizedTest
 	@ValueSource(ints = {2, 199, Integer.MAX_VALUE})
-	public void isPrimeForPrimes(int number) throws IllegalNumberException{
-		assertTrue(NumberWorker.isPrime(number));
+	public void isPrimeForPrimes(int number) throws NumberWorker.IllegalNumberException {
+		assertTrue(worker.isPrime(number));
 	}
 
 	@ParameterizedTest
 	@ValueSource(ints = {14, 10023, 10000002})
-	public void isPrimeForNotPrime(int number) throws IllegalNumberException {
-		assertFalse(NumberWorker.isPrime(number));
+	public void isPrimeForNotPrime(int number) throws NumberWorker.IllegalNumberException {
+		assertFalse(worker.isPrime(number));
 	}
 
 	@ParameterizedTest
 	@ValueSource(ints = {-11, 0, 1})
 	public void isPrimeForIncorrectNumbers(int number) {
-		Throwable thrown = assertThrows(IllegalNumberException.class, () -> {
-			NumberWorker.isPrime(number);
+		Throwable thrown = assertThrows(NumberWorker.IllegalNumberException.class, () -> {
+			worker.isPrime(number);
 		});
 		assertNotNull(thrown);
 	}
