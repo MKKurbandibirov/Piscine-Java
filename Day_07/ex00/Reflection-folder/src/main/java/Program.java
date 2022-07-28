@@ -7,6 +7,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Program {
 	private static List<String> classes;
@@ -64,6 +65,22 @@ public class Program {
 		return value;
 	}
 
+	private static String getMethod(Method method) {
+		String res =  String.format("%s %s", method.getReturnType().getSimpleName(),
+				method.getName());
+		res += "(";
+		Class<?>[] parametersTypes = method.getParameterTypes();
+		for (int i = 0; i < parametersTypes.length; i++) {
+			if (i == parametersTypes.length - 1) {
+				res += parametersTypes[i].getSimpleName();
+			} else {
+				res += parametersTypes[i].getSimpleName() + ", ";
+			}
+		}
+		res += ")";
+		return res;
+	}
+
 	private static void printInfoAboutClass(Set<Class<? extends Object>> allClasses, String value) {
 		for (Class<? extends Object> tmp : allClasses) {
 			if (tmp.getSimpleName().equals(value)) {
@@ -76,14 +93,7 @@ public class Program {
 				System.out.println("methods:");
 				methods = tmp.getDeclaredMethods();
 				for (Method method : methods) {
-					System.out.printf("\t%s %s", method.getReturnType().getSimpleName(),
-							method.getName());
-					Class<?>[] parametersTypes = method.getParameterTypes();
-					System.out.print("(");
-					for (Class<?> type : parametersTypes) {
-						System.out.printf("%s ", type.getSimpleName());
-					}
-					System.out.println(")");
+					System.out.printf("\t%s\n", getMethod(method));
 				}
 				break;
 			}
@@ -140,9 +150,11 @@ public class Program {
 			System.err.println("Illegal argument!");
 			System.exit(-1);
 		}
-		String tmp1 = scan.next();
+		scan.nextLine();
+		String tmp1 = scan.nextLine();
 		for (Method method : methods) {
-			if (method.getName().equals(tmp1)) {
+//			System.out.println(getMethod(method).split(" ", 1)[0]);
+			if (getMethod(method).split(" ", 2)[1].equals(tmp1)) {
 				Class<?>[] parametersTypes = method.getParameterTypes();
 				if (parametersTypes.length > 0) {
 					Object[] params = new Object[parametersTypes.length];
@@ -168,12 +180,14 @@ public class Program {
 						}
 					}
 					try {
+						System.out.println("Method returned:");
 						System.out.println(method.invoke(instance, params));
 					} catch (IllegalAccessException | InvocationTargetException e) {
 						e.printStackTrace();
 					}
 				} else {
 					try {
+						System.out.println("Method returned:");
 						System.out.println(method.invoke(instance));
 					} catch (IllegalAccessException | InvocationTargetException e) {
 						e.printStackTrace();

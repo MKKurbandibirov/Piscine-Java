@@ -26,6 +26,10 @@ public class Test {
         return !p1;
     }
 
+    public Boolean m2(Integer p1) {
+        return p1 * -1 > 0;
+    }
+
     public void m3() {
         System.out.println("HAHAHAHHAHA");
     }
