@@ -22,7 +22,7 @@ public class Program {
         }
         {
             ApplicationContext context = new ClassPathXmlApplicationContext("context.xml");
-            Printer printer = context.getBean("printerWithDateAndLowerErrRenderer", Printer.class);
+            Printer printer = context.getBean("printer", Printer.class);
             printer.print ("Hello!") ;
         }
     }

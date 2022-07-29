@@ -12,15 +12,15 @@ import java.sql.ResultSet;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+import javax.sql.DataSource;
+
 public class UsersRepositoryJdbcTemplateImpl implements UsersRepository {
     private final JdbcTemplate template;
 
     private final RowMapper<User> ROW_MAPPER = (ResultSet resultSet, int rowNum) ->
             new User(resultSet.getLong(1), resultSet.getString(2));
 
-    @Autowired
-    public UsersRepositoryJdbcTemplateImpl(DriverManagerDataSource ds) {
+    public UsersRepositoryJdbcTemplateImpl(DataSource ds) {
         this.template = new JdbcTemplate(ds);
     }
 

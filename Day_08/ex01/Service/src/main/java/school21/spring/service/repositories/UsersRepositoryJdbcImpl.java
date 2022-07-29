@@ -11,10 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class UsersRepositoryJdbcImpl implements UsersRepository {
-    private final HikariDataSource ds;
+import javax.sql.DataSource;
 
-    public UsersRepositoryJdbcImpl(HikariDataSource ds) {
+public class UsersRepositoryJdbcImpl implements UsersRepository {
+    private final DataSource ds;
+
+    public UsersRepositoryJdbcImpl(DataSource ds) {
         this.ds = ds;
     }
 
