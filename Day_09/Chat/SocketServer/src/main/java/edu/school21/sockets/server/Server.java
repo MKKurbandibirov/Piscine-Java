@@ -1,12 +1,14 @@
 package edu.school21.sockets.server;
 
-import edu.school21.sockets.models.User;
 import edu.school21.sockets.services.UsersService;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Server {
     private Socket clientSocket;
@@ -16,9 +18,10 @@ public class Server {
     private Integer port;
     private UsersService service;
 
-    public Server(Integer port, UsersService service) {
+    public Server(Integer port) {
         this.port = port;
-        this.service = service;
+        ApplicationContext context = new AnnotationConfigApplicationContext("edu.school21.sockets");
+        this.service = context.getBean("usersService", UsersService.class);
     }
 
     public void connect() {
