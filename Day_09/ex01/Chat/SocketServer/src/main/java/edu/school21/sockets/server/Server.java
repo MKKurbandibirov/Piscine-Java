@@ -1,52 +1,62 @@
 package edu.school21.sockets.server;
 
+import edu.school21.sockets.models.User;
 import edu.school21.sockets.services.UsersService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
+@Component
 public class Server {
-    private static List<Client> clients = new ArrayList<>();
-    private ServerSocket server;
-    private final Integer port;
-    private final UsersService service;
+    private UsersService usersService;
+    private ServerSocket serverSocket;
+    private List<LifeCycle> lifeCycles = new ArrayList<>();
 
-    public Server(Integer port) {
-        ApplicationContext context = new AnnotationConfigApplicationContext("edu.school21.sockets");
-        this.service = context.getBean("usersService", UsersService.class);
-        this.port = port;
+    @Autowired
+    public Server(UsersService usersService) {
+        this.usersService = usersService;
     }
 
-    public void start() {
+    public void start(int port) {
         try {
-            try {
-                server = new ServerSocket(this.port);
-                System.out.println("Server started!\n-------------------------------");
-                try (Socket clientSocket = server.accept()) {
-//                    ServerLifeCycle cycle = new ServerLifeCycle(clientSocket, service);
-//                    clientsSockets.add(cycle);
-//                    executorService.execute(cycle.start());
-                }
-            } finally {
-                System.out.println("-------------------------------\nServer finished!");
-                server.close();
+            serverSocket = new ServerSocket(port);
+
+            while(true) {
+                Socket socket = serverSocket.accept();
+                LifeCycle client = new LifeCycle(socket);
+                lifeCycles.add(client);
+                client.start();
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.err.println(e.getMessage());
+            stop();
+        }
+    }
+
+    private synchronized void sendMessageToAll(String message) {
+        usersService.createMessage(message);
+        lifeCycles.stream().filter(c -> c.active).forEach(c -> c.writer.println(message));
+    }
+
+    private void removeClient(LifeCycle client) {
+        lifeCycles.remove(client);
+
+        if (lifeCycles.isEmpty()) {
+            stop();
         }
     }
 
     private void stop() {
         try {
-            if (service != null) {
-                server.close();
+            if (serverSocket != null) {
+                serverSocket.close();
             }
         } catch (IOException e) {
             System.err.println(e.getMessage());
@@ -54,70 +64,118 @@ public class Server {
         System.exit(0);
     }
 
-    private void remove(Client client) {
-        clients.remove(client);
-        System.out.println("The user has left the chat.");
-
-        if (clients.isEmpty()) {
-            System.out.println("No users! The chat is closed!");
-            stop();
-        }
-    }
-
-
-    private class Client extends Thread {
-        private Scanner reader;
+    private class LifeCycle extends Thread {
         private PrintWriter writer;
+        private Scanner reader;
         private Socket socket;
         private String username;
         private String password;
-        private Boolean online;
+        private boolean active;
 
-        public Client(Socket socket) {
-            this.socket = socket;
+        LifeCycle(Socket socket) {
             try {
-                this.reader = new Scanner(socket.getInputStream());
-                this.writer = new PrintWriter(socket.getOutputStream());
+                this.socket = socket;
+                reader = new Scanner(socket.getInputStream());
+                writer = new PrintWriter(socket.getOutputStream(), true);
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println(e.getMessage());
             }
         }
 
         @Override
         public void run() {
-            writer.println("Hello from server!");
-            while (true) {
-                writer.println("Choose command:\n\tsignUp\n\tsignIn\n\texit");
-                if (reader.hasNextLine()) {
-                    String message = reader.nextLine();
-                    if (message.equals("signUp")) {
-                        if (!readUserData()) {
+            writer.println("Hello from Server!");
 
+            while (true) {
+                writer.println("Choose command: signUp, signIn, exit");
+
+                try {
+                    if (reader.hasNextLine()) {
+                        String message = reader.nextLine().trim();
+
+                        if ("signUp".equalsIgnoreCase(message)) {
+                            if (!getUserPass()) {
+                                exitChat();
+                                break;
+                            }
+                            usersService.signUp(username, password);
+                        } else if ("signIn".equalsIgnoreCase(message)) {
+                            if (!getUserPass()) {
+                                exitChat();
+                                break;
+                            }
+
+                            if (usersService.signIn(username, password)) {
+                                writer.println("Authorization successful!");
+                                writer.println("Start messaging");
+                                talk();
+                                break;
+                            } else {
+                                writer.println("Authorization failed!");
+                            }
+                        } else if ("".equals(message)) {
+                            continue;
+                        } else if ("exit".equals(message)) {
+                            exitChat();
+                            break;
+                        } else {
+                            writer.println("Unknown command!");
                         }
                     }
+                } catch (RuntimeException e) {
+                    System.err.println(e.getMessage());
+                    writer.println(e.getMessage());
                 }
-
             }
         }
 
-        public Boolean readUserData() {
-            writer.println("Enter username:");
-            if (reader.hasNextLine()) {
-                username = reader.nextLine();
+        private boolean getUserPass() {
+            writer.println("Enter username: ");
+            username = reader.nextLine().trim();
+
+            while("".equals(username)) {
+                username = reader.nextLine().trim();
             }
-            if (username.equals("exit")) {
+
+            if ("exit".equals(username)) {
                 return false;
             }
-            writer.println("Enter password:");
-            if (reader.hasNextLine()) {
-                username = reader.nextLine();
+            writer.println("Enter password: ");
+            password = reader.nextLine().trim();
+
+            while("".equals(password)) {
+                password = reader.nextLine().trim();
             }
-            if (username.equals("exit")) {
+
+            if ("exit".equals(password)) {
                 return false;
             }
             return true;
         }
 
+        private void talk() {
+            while (true) {
+                active = true;
+                String message = reader.nextLine().trim();
 
+                if ("exit".equals(message)) {
+                    exitChat();
+                    break;
+                }
+                sendMessageToAll(username + ": " + message);
+            }
+        }
+
+        private void exitChat() {
+            try {
+                writer.println("exit");
+                removeClient(this);
+                reader.close();
+                writer.close();
+                socket.close();
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 }

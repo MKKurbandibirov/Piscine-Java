@@ -4,24 +4,23 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Message {
-    private Long author_id;
+    private Long id;
     private String text;
     private LocalDateTime time;
-
     public Message() {}
 
-    public Message(Long author_id, String text, LocalDateTime time) {
-        this.author_id = author_id;
+    public Message(Long id, String text, LocalDateTime time) {
+        this.id = id;
         this.text = text;
         this.time = time;
     }
 
-    public Long getAuthor_id() {
-        return author_id;
+    public Long getId() {
+        return id;
     }
 
-    public void setAuthor_id(Long author_id) {
-        this.author_id = author_id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getText() {
@@ -45,19 +44,18 @@ public class Message {
         if (this == o) return true;
         if (!(o instanceof Message)) return false;
         Message message = (Message) o;
-        return author_id.equals(message.author_id) && Objects.equals(text, message.text) && Objects.equals(time, message.time);
+        return Objects.equals(text, message.text) && time.equals(message.time);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(author_id);
+        return Objects.hash(time);
     }
 
     @Override
     public String toString() {
         return "Message{" +
-                "author_id=" + author_id +
-                ", text='" + text + '\'' +
+                "text='" + text + '\'' +
                 ", time=" + time +
                 '}';
     }

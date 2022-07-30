@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,7 +50,7 @@ public class UsersRepositoryImpl implements UsersRepository{
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodePass = encoder.encode(entity.getPassword());
         this.template.update(String
-                        .format("INSERT INTO users (username, password) VALUES ('%s', '%s')",
+                .format("INSERT INTO users (username, password) VALUES ('%s', '%s')",
                         entity.getUsername(), encodePass));
     }
 
